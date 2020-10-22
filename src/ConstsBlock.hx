@@ -1,3 +1,6 @@
+package src;
+
+import src.compilers.BaseCompiler;
 using StringTools;
 
 class ConstsBlock {
@@ -28,7 +31,7 @@ class ConstsBlock {
         return res;
     }
 
-    public function compile(compiler : Compiler) {
+    public function compile(compiler : BaseCompiler) {
         return compiler.constBlock([
             for (bloc in defs) compiler.const(bloc.name, bloc.content.compile(compiler))
         ]);

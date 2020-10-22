@@ -1,3 +1,5 @@
+package src;
+
 using StringTools;
 
 class Block {
@@ -46,7 +48,7 @@ class Block {
         return outputBlock.eval(blocks, consts);
     }
 
-    public function compile(compiler : Compiler) {
+    public function compile(compiler : src.compilers.BaseCompiler) {
         var constsStr = "";
         if (constsBlock != null) {
             constsStr = constsBlock.compile(compiler) + "\n";

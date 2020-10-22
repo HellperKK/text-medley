@@ -1,3 +1,7 @@
+package src;
+
+using StringTools;
+
 class Utils {
     @:generic static public function getBlock<T>(inp : String, reg : EReg, func : EReg -> T) {
         var res = [];
@@ -6,5 +10,23 @@ class Utils {
             inp = reg.matchedRight();
         }
         return res;
+    }
+
+    @:generic static public function arrayUniq<T>(elems : Array<T>) {
+        var res = [];
+        for (elem in elems) {
+            if (res.indexOf(elem) == -1) {
+                res.push(elem);
+            }
+        }
+        return res;
+    }
+
+    static public function escape(str : String) {
+        return str.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+
+    static public function moduleToPath(module : String) {
+        return module.replace(".", "/");
     }
 }

@@ -1,3 +1,5 @@
+package src;
+
 using StringTools;
 
 class OutputBlock {
@@ -19,9 +21,7 @@ class OutputBlock {
         return expressions[index];
     }
 
-    public function compile(compiler : Compiler) {
-        return compiler.outputBlock([
-            for (expression in expressions) expression.compile(compiler)
-        ]);
+    public function compile(compiler : src.compilers.BaseCompiler) {
+        return compiler.outputBlock(expressions);
     }
 }

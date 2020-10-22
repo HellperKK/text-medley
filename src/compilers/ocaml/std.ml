@@ -1,0 +1,1 @@
+let pick_random arr = arr.(Random.int (Array.length arr))

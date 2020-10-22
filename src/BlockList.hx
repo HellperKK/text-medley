@@ -1,4 +1,7 @@
-@:expose class BlockList {
+package src;
+
+@:expose
+class BlockList {
     static private var recMax = 500;
 
     private var blocks : Map<String, Block>;
@@ -41,10 +44,8 @@
         return eval("main");
     }
 
-    public function compile(compiler : Compiler) {
-        var res = compiler.blockList([
-            for (bloc in blocks.keyValueIterator()) compiler.block(bloc.key, bloc.value.compile(compiler))
-        ]);
+    public function compile(compiler : src.compilers.BaseCompiler) {
+        var res = compiler.blockList(blocks);
         
         return compiler.global(res);
     }

@@ -1,3 +1,5 @@
+package src;
+
 class Expression {
     private var tokens:Array<Token>;
 
@@ -29,7 +31,7 @@ class Expression {
         ].join("");
     }
 
-    public function compile(compiler : Compiler) {
+    public function compile(compiler : src.compilers.BaseCompiler) {
         return compiler.expression([
             for (token in tokens)
                 switch (token) {
@@ -41,5 +43,19 @@ class Expression {
                         compiler.blkToken(name);
                 }
         ]);
+    }
+
+    public function getTokenNames() {
+        return tokens.map(function (token) {
+            return switch (token) {
+                case Var(name):
+                    name;
+                case _:
+                    "";
+            }
+        })
+        .filter(function (name) {
+            return name != "";
+        });
     }
 }
