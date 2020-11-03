@@ -64,4 +64,4 @@ make $target
 where `$target` can be :
 - python
 - js
-- PHP
+- php
