@@ -1,5 +1,7 @@
 package src;
 
+import haxe.Json;
+
 @:expose
 class BlockList {
     static private var recMax = 500;
@@ -48,5 +50,9 @@ class BlockList {
         var res = compiler.blockList(blocks);
         
         return compiler.global(res);
+    }
+
+    public function toJson() {
+        return Json.stringify(this, "  ");
     }
 }
