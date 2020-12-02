@@ -22,8 +22,12 @@ class Utils {
         return res;
     }
 
+    static public function escape_interp(str : String) {
+        return str.replace("\\n", "\n");
+    }
+
     static public function escape(str : String) {
-        return str.replace("\\", "\\\\").replace("\"", "\\\"");
+        return escape_interp(str).replace("\\", "\\\\").replace("\"", "\\\"");
     }
 
     static public function moduleToPath(module : String) {

@@ -22,7 +22,7 @@ class Expression {
             for (token in tokens)
                 switch (token) {
                     case Str(content): 
-                        content;
+                        Utils.escape_interp(content);
                     case Var(name):
                         consts[name];
                     case Blk(name):
