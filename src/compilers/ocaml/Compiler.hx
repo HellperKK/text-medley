@@ -34,7 +34,7 @@ class Compiler extends BaseCompiler {
     }
 
     public override function constBlock(consts : Array<String>) : String {
-        return consts.join("/n");
+        return consts.join("\n");
     }
 
     public override function const(name : String, content : String) : String {

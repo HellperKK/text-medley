@@ -1,23 +1,23 @@
-package src.compilers.javascript;
+package src.compilers.haxe;
 
-@:build(src.Macros.importStaticString("FUN_STD", "std.js"))
+@:build(src.Macros.importStaticString("FUN_STD", "std.hx.tpl"))
 @:expose 
 class Compiler extends BaseCompiler {
 
     public override function global(str : String) : String {
-        return [
+        var body = [
             FUN_STD,
             str
         ].join("\n\n");
+        
+        return 'class TextMedleyGen {\n${indent(body)}\n}';
     }
 
     public override function blockList(blocks : Map<String, Block>) : String {
-        var defs = [
+        return [
             for (block in blocks.keyValueIterator())
-                'function ${makeName(block.key)}(){\n${indent(block.value.compile(this))}\n}'
-        ];
-
-        return defs.join("\n\n");
+                'static public function ${makeName(block.key)}() {\n${indent(block.value.compile(this))}\n}'
+        ].join("\n\n");
     }
 
     public override function constBlock(consts : Array<String>) : String {
@@ -25,12 +25,12 @@ class Compiler extends BaseCompiler {
     }
 
     public override function const(name : String, content : String) : String {
-        return "let " + name + " = " + content + ";";
+        return 'var ${name} = ${content};';
     }
 
     public override function outputBlock(exps : Array<Expression>) : String {
-        var lams = exps.map(function(exp) { return "(() => " + exp.compile(this) + ")"; });
-        return "return pick_random([\n" + indent(lams.join(",\n")) + "\n])();";
+        var lams = exps.map(exp -> '() -> ${exp.compile(this)}');
+        return 'return pick_random([${lams.join(",\n")}])();';
     }
 
     public override function expression(exprs : Array<String>) : String {
@@ -38,7 +38,7 @@ class Compiler extends BaseCompiler {
     }
 
     public override function strToken(str : String) : String {
-        return "\"" + Utils.escape(str) + "\"";
+        return '"${Utils.escape(str)}"';
     }
 
     public override function varToken(str : String) : String {
@@ -46,6 +46,6 @@ class Compiler extends BaseCompiler {
     }
 
     public override function blkToken(str : String) : String {
-        return makeName(str) + "()";
+        return '${makeName(str)}()';
     }
 }
