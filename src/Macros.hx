@@ -14,4 +14,15 @@ class Macros {
 
 		return macro $v{fileContent};
 	}
+
+	macro public static function joinBlocks(exprs:Array<Expr>) {
+		var sep = "\n\n";
+		var expr = exprs.shift();
+
+		while (exprs.length > 0) {
+			expr = macro $expr + $v{sep} + ${exprs.shift()};
+		}
+
+		return expr;
+	}
 }
