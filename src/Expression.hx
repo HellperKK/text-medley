@@ -1,5 +1,7 @@
 package;
 
+import Token;
+
 class Expression {
 	private var tokens:Array<Token>;
 
