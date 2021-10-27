@@ -1,15 +1,16 @@
 package compilers.ocaml;
 
-@:build(Macros.importStaticString("FUN_STD", "std.ml"))
 @:expose
 class Compiler extends BaseCompiler {
+	public override function new() {
+		super();
+
+		FUN_STD = Macros.importString("std.ml");
+	}
+
 	public function makeFun(pair:{key:String, value:Block}, rec:String):String {
 		var newName = makeName(pair.key);
 		return '${rec} ${newName} () =\n${indent(pair.value.compile(this))}';
-	}
-
-	public override function global(str:String):String {
-		return [FUN_STD, str].join("\n\n");
 	}
 
 	public override function blockList(blocks:Map<String, Block>):String {

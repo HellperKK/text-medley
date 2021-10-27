@@ -4,14 +4,13 @@ using StringTools;
 
 @:expose
 class BaseCompiler {
+	private var INDENT_STRING = "    ";
+	private var FUN_STD = "";
+
 	public function new() {}
 
 	public function indent(code:String) {
-		return indentString() + code.replace('\n', '\n${indentString()}');
-	}
-
-	public function indentString() {
-		return "    ";
+		return INDENT_STRING + code.replace('\n', '\n${INDENT_STRING}');
 	}
 
 	public function makeName(name:String) {
@@ -19,7 +18,7 @@ class BaseCompiler {
 	}
 
 	public function global(str:String):String {
-		throw "To be implemented";
+		return Macros.joinBlocks(FUN_STD, str);
 	}
 
 	public function blockList(blocks:Map<String, Block>):String {

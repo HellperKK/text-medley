@@ -1,10 +1,11 @@
 package compilers.javascript;
 
-@:build(Macros.importStaticString("FUN_STD", "std.js"))
 @:expose
 class Compiler extends BaseCompiler {
-	public override function global(str:String):String {
-		return [FUN_STD, str].join("\n\n");
+	public override function new() {
+		super();
+
+		FUN_STD = Macros.importString("std.js");
 	}
 
 	public override function blockList(blocks:Map<String, Block>):String {

@@ -1,10 +1,15 @@
 package compilers.haxe;
 
-@:build(Macros.importStaticString("FUN_STD", "std.hx.tpl"))
 @:expose
 class Compiler extends compilers.BaseCompiler {
+	public override function new() {
+		super();
+
+		FUN_STD = Macros.importString("std.hx.tpl");
+	}
+
 	public override function global(str:String):String {
-		var body = [FUN_STD, str].join("\n\n");
+		var body = super.global(str);
 
 		return 'class TextMedleyGen {\n${indent(body)}\n}';
 	}
