@@ -1,5 +1,6 @@
 package;
 
+import haxe.macro.Expr;
 import Expression;
 
 using StringTools;
@@ -76,4 +77,17 @@ class Block {
 
 		return constsStr + outputBlock.compile(compiler);
 	}
+
+	#if macro
+	public function toExpr() {
+		var code:Array<Expr> = if (constsBlock != null) constsBlock.toExpr().concat(outputBlock.toExpr()) else outputBlock.toExpr();
+
+		return {
+			expr: macro $b{code},
+			args: [],
+			params: [],
+			ret: null // (macro:String)
+		};
+	}
+	#end
 }

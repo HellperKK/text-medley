@@ -1,6 +1,10 @@
 package;
 
 import Token;
+#if macro
+import haxe.macro.Expr;
+import haxe.macro.Context;
+#end
 
 using StringTools;
 
@@ -127,4 +131,26 @@ class Expression {
 			return name != "";
 		});
 	}
+
+	#if macro
+	public function toExpr():Expr {
+		var exprs = tokens.map(token -> {
+			switch (token) {
+				case Str(content):
+					return macro $v{Utils.escape(content)};
+				case Var(name): return (macro $i{name});
+				case Blk(name, _params):
+					return {pos: Context.currentPos(), expr: ECall({pos: Context.currentPos(), expr: EConst(CIdent(name))}, [])};
+			}
+		});
+
+		var expr = exprs.shift();
+
+		while (exprs.length > 0) {
+			expr = macro $expr + ${exprs.shift()};
+		}
+
+		return expr;
+	}
+	#end
 }

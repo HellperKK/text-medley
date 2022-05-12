@@ -1,0 +1,23 @@
+#main:
+    -output:
+        hello my name is #name
+        goodbye #friend
+        woops, I don't know what to say
+#end
+
+#name:
+    -output:
+        martin
+        jeanne
+        paul
+        world
+#end
+
+#friend:
+    -vars:
+        $name = #name
+    -output:
+        my best pal whose name is $name, yes $name !
+        my lover #name
+        my... well I don't know you I guess ?
+#end

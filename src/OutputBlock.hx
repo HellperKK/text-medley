@@ -2,6 +2,10 @@ package;
 
 using StringTools;
 
+#if macro
+import haxe.macro.Expr;
+#end
+
 class OutputBlock {
 	private var expressions:Array<Expression>;
 
@@ -24,4 +28,24 @@ class OutputBlock {
 	public function compile(compiler:compilers.BaseCompiler) {
 		return compiler.outputBlock(expressions);
 	}
+
+	#if macro
+	public function toExpr() {
+		var code:Array<Expr> = [];
+
+		code.push(macro var i = Math.floor(Math.random() * $v{expressions.length}));
+
+		for (i in 0...expressions.length) {
+			var x = (macro if (i == $v{i}) {
+				return ${expressions[i].toExpr()}
+			});
+
+			code.push(x);
+		}
+
+		code.push(macro return "");
+
+		return code;
+	}
+	#end
 }

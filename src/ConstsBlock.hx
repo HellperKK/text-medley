@@ -1,6 +1,10 @@
 package;
 
 import compilers.BaseCompiler;
+#if macro
+import haxe.macro.Expr;
+import haxe.macro.Context;
+#end
 
 using StringTools;
 
@@ -36,4 +40,17 @@ class ConstsBlock {
 				compiler.const(bloc.name, bloc.content.compile(compiler))
 		]);
 	}
+
+	#if macro
+	public function toExpr() {
+		var code:Array<Expr> = [];
+
+		for (pair in defs) {
+			var id = pair.name;
+			code.push(macro var $id = ${pair.content.toExpr()});
+		}
+
+		return code;
+	}
+	#end
 }

@@ -14,4 +14,10 @@ class Utils {
 	static public function trimRight(str:String) {
 		return ~/^\s+/.map(str, e -> "");
 	}
+
+	@generic
+	static public function debug<A>(value:A):A {
+		trace(value);
+		return value;
+	}
 }
