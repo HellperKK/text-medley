@@ -2,36 +2,102 @@ package;
 
 import Token;
 
+using StringTools;
+
+typedef Capture = {
+	var content:Token;
+	var next:Int;
+}
+
 class Expression {
+	public static function evalToken(blocks:BlockList, consts:Map<String, String>, token:Token) {
+		return switch (token) {
+			case Str(content):
+				Utils.escape_interp(content);
+			case Var(name):
+				consts[name];
+			case Blk(name, params):
+				blocks.eval(name, params);
+		};
+	}
+
+	public static function getVar(content:String) {
+		var i = 1;
+
+		while (i < content.length && ~/[a-zA-z]/.match(content.charAt(i))) {
+			i++;
+		}
+
+		return {content: Var(content.substring(1, i)), next: i};
+	}
+
+	public static function getBlock(content:String) {
+		var i = 1;
+
+		while (i < content.length && ~/[a-zA-z]/.match(content.charAt(i))) {
+			i++;
+		}
+
+		return {content: Blk(content.substring(1, i), []), next: i};
+	}
+
+	public static function getString(content:String) {
+		var i = 1;
+
+		while (i < content.length && content.charAt(i) != '"') {
+			if (content.charAt(i) == '\\') {
+				i++;
+			}
+
+			i++;
+		}
+
+		if (i == content.length) {
+			throw 'missing " for string end';
+		}
+
+		return {content: Str(content.substring(1, i)), next: i + 1};
+	}
+
+	public static function getEnd(content:String) {
+		var i = 1;
+
+		while (i < content.length && ~/[^"$#]/.match(content.charAt(i))) {
+			i++;
+		}
+
+		return {content: Str(content.substring(0, i)), next: i};
+	}
+
 	private var tokens:Array<Token>;
 
 	public function new(content:String) {
-		tokens = Utils.getBlock(content, ~/(([^#\$]+)|(#[a-zA-Z]+)|(\$[a-zA-Z]+))/, function(reg) {
-			var tok = reg.matched(1);
+		tokens = [];
+		var newContent = ~/^\s/.map(content, _e -> "");
 
-			var reg = ~/#([a-zA-Z]+)/;
-			if (reg.match(tok))
-				return Blk(reg.matched(1));
+		while (newContent != "") {
+			var capture:Capture = switch (newContent.charAt(0)) {
+				case '"':
+					getString(newContent);
 
-			var reg = ~/\$([a-zA-Z]+)/;
-			if (reg.match(tok))
-				return Var(reg.matched(1));
+				case '$':
+					getVar(newContent);
 
-			return Str(tok);
-		});
+				case '#':
+					getBlock(newContent);
+
+				case _: getEnd(content);
+			}
+
+			tokens.push(capture.content);
+			newContent = newContent.substr(capture.next);
+		}
 	}
 
 	public function eval(blocks:BlockList, consts:Map<String, String>) {
 		return [
 			for (token in tokens)
-				switch (token) {
-					case Str(content):
-						Utils.escape_interp(content);
-					case Var(name):
-						consts[name];
-					case Blk(name):
-						blocks.eval(name);
-				}
+				evalToken(blocks, consts, token)
 		].join("");
 	}
 
@@ -43,7 +109,7 @@ class Expression {
 						compiler.strToken(content);
 					case Var(name):
 						compiler.varToken(name);
-					case Blk(name):
+					case Blk(name, _params):
 						compiler.blkToken(name);
 				}
 		]);

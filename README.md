@@ -65,3 +65,8 @@ where `$target` can be :
 - python
 - js
 - php
+
+## Examples
+
+This one can print
+

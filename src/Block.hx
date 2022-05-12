@@ -1,46 +1,66 @@
 package;
 
+import Expression;
+
 using StringTools;
 
 class Block {
 	static private var keys = ["vars", "output"];
 
-	static public function parseBlock(block:String) {
-		var trimmedBlock = block.trim();
-		var subBlocks = Utils.getBlock(trimmedBlock, ~/-([a-z]+):(([^-]|\s)+)/, function(reg) {
-			return {
-				name: reg.matched(1),
-				content: reg.matched(2)
-			};
-		});
-
-		var subBlocksMap = [for (subBlock in subBlocks) subBlock.name => subBlock.content];
-		for (key in subBlocksMap.keys()) {
-			if (keys.indexOf(key) == -1) {
-				return null;
-			}
-		}
-
-		if (!subBlocksMap.exists("output")) {
-			return null;
-		}
-
-		return new Block(subBlocksMap);
-	}
-
 	private var constsBlock:ConstsBlock;
 	private var outputBlock:OutputBlock;
+	private var name:String;
+	private var params:Array<String>;
 
-	public function new(blocks:Map<String, String>) {
+	public function new(name:String, params:Array<String>, content:String) {
+		this.name = name;
+		this.params = params;
 		constsBlock = null;
-		if (blocks.exists("vars")) {
-			constsBlock = new ConstsBlock(blocks["vars"]);
-		}
-		outputBlock = new OutputBlock(blocks["output"]);
+		outputBlock = null;
+
+		parseBlock(content);
 	}
 
-	public function eval(blocks:BlockList) {
+	public function parseBlock(input:String) {
+		var blockStart = ~/-([a-zA-Z]+):/;
+		var inputPart = input;
+
+		while (blockStart.match(inputPart)) {
+			var part = blockStart.matchedRight();
+			var blockName = blockStart.matched(1);
+
+			if (!keys.contains(blockName)) {
+				throw 'invalid block name "-${blockName}"';
+			}
+
+			if (blockStart.match(part)) {
+				addBlock(blockName, blockStart.matchedLeft());
+				inputPart = part.substr(blockStart.matchedPos().pos);
+			} else {
+				addBlock(blockName, part);
+				inputPart = "";
+			}
+		}
+	}
+
+	public function addBlock(name:String, content:String) {
+		switch (name) {
+			case "vars":
+				constsBlock = new ConstsBlock(content);
+			case "output":
+				outputBlock = new OutputBlock(content);
+			case _:
+				throw "should not happen";
+		}
+	}
+
+	public function eval(blocks:BlockList, params:Array<Token>) {
 		var consts = new Map<String, String>();
+
+		for (i in 0...this.params.length) {
+			consts.set(this.params[i], Expression.evalToken(blocks, consts, params[i]));
+		}
+
 		if (constsBlock != null) {
 			consts = constsBlock.eval(blocks);
 		}

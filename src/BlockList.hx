@@ -2,36 +2,48 @@ package;
 
 import haxe.Json;
 
+using StringTools;
+
 @:expose
 class BlockList {
 	static private var recMax = 500;
 
 	private var blocks:Map<String, Block>;
-	private var recCount:Int;
+	private var recCount:Int = 0;
 
-	public function new(inp:String) {
-		recCount = 0;
+	public function new(input:String) {
+		var blockStart = ~/#([a-zA-Z]+)/;
+		var blockEnd = ~/#end/;
+		var inputPart = input;
+		blocks = new Map<String, Block>();
 
-		var tempBlocks = Utils.getBlock(inp, ~/#(.+?):((.|\s)+?)end#/, function(reg) {
-			return {
-				name: reg.matched(1),
-				content: Block.parseBlock(reg.matched(2))
-			};
-		});
+		while (blockStart.match(inputPart)) {
+			var part = blockStart.matchedRight();
+			var ruleName = blockStart.matched(1);
 
-		blocks = [
-			for (block in tempBlocks)
-				if (block.content != null) block.name => block.content
-		];
+			if (!blockEnd.match(part)) {
+				throw 'no closing "#end" for rule "#${ruleName}"';
+			}
+
+			blocks.set(ruleName, new Block(ruleName, [], blockEnd.matchedLeft()));
+			inputPart = blockEnd.matchedRight();
+		}
+
+		// comment for regex shame
+		// ~/#([a-zA-Z]+?)(\((\$[a-zA-Z]+( *, *\$[a-zA-Z]+)*)\))?:((.|\s)+?)end#/
 	}
 
-	public function eval(name:String) {
+	public function eval(name:String, params:Array<Token> = null) {
+		if (params == null) {
+			params = [];
+		}
+
 		if (recCount == recMax) {
 			throw "Max recursion reached";
 		}
 
 		recCount += 1;
-		var ret = blocks[name].eval(this);
+		var ret = blocks[name].eval(this, params);
 		recCount -= 1;
 
 		return ret;

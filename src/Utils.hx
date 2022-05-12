@@ -33,4 +33,32 @@ class Utils {
 	static public function moduleToPath(module:String) {
 		return module.replace(".", "/");
 	}
+
+	static public function warning(text:String) {
+		trace('WARNING! ${text}');
+	}
+
+	static public function getVars(str:String) {
+		if (Type.getClass(str) == String) {
+			return str.split(',').map(str -> {
+				var reg = ~/\$([a-zA-Z]+)/;
+
+				if (reg.match(str)) {
+					return reg.matched(1);
+				}
+
+				return "";
+			});
+		}
+
+		return [];
+	}
+
+	static public function safeSplit(str:String, sep:String) {
+		if (Type.getClass(str) == String) {
+			return str.split(sep);
+		}
+
+		return [];
+	}
 }
