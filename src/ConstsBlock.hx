@@ -8,15 +8,15 @@ class ConstsBlock {
 	private var defs:Array<{name:String, content:Expression}>;
 
 	public function new(content:String) {
-		var trimmedContent = content.trim().split("\n").map(function(line) {
-			return line.trim();
-		}).join("\n");
+		defs = content.trim().split("\n").filter(line -> line != "").map(line -> {
+			var leftPart = ~/\$([a-zA-Z]+)\s*=/;
+			var trueLine = Utils.trimRight(line);
 
-		defs = Utils.getBlock(trimmedContent, ~/\$([a-zA-Z]+) *= *(.+)/, function(reg) {
-			return {
-				name: reg.matched(1),
-				content: new Expression(reg.matched(2))
-			};
+			if (!leftPart.match(trueLine)) {
+				throw 'invalid const declaration in "${trueLine}"';
+			}
+
+			return {name: leftPart.matched(1), content: new Expression(leftPart.matchedRight())};
 		});
 	}
 

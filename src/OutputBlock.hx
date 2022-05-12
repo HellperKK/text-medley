@@ -7,7 +7,7 @@ class OutputBlock {
 
 	public function new(content:String) {
 		var trimmedContent = content.trim();
-		expressions = trimmedContent.split("\n").map(function(line) {
+		expressions = trimmedContent.split("\n").filter(line -> line != "").map(function(line) {
 			return new Expression(line.trim());
 		});
 	}
