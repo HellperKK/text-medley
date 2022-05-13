@@ -1,0 +1,3 @@
+--class-path src
+--main MasterCompiler
+--js main.js

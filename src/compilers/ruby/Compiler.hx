@@ -1,5 +1,7 @@
 package compilers.ruby;
 
+using Lambda;
+
 @:expose
 class Compiler extends BaseCompiler {
 	public override function new() {
@@ -26,10 +28,8 @@ class Compiler extends BaseCompiler {
 	}
 
 	public override function outputBlock(exps:Array<Expression>):String {
-		var lams = exps.map(function(exp) {
-			return "lambda{ " + exp.compile(this) + " }";
-		});
-		return "pick_random([\n" + indent(lams.join(",\n")) + "\n]).call()";
+		var lams = exps.mapi((index, exp) -> 'if _rand == ${index}\n${indent("return " + exp.compile(this))}\nend');
+		return '_rand = rand(0...${exps.length})\n${lams.join('\n')}';
 	}
 
 	public override function expression(exprs:Array<String>):String {

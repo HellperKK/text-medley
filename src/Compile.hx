@@ -1,3 +1,6 @@
+package;
+
+#if !js
 import haxe.io.Path;
 import sys.FileSystem;
 import haxe.macro.Context;
@@ -68,3 +71,4 @@ class Compile {
 		return out;
 	}
 }
+#end

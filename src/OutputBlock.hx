@@ -7,7 +7,7 @@ import haxe.macro.Expr;
 #end
 
 class OutputBlock {
-	private var expressions:Array<Expression>;
+	public var expressions:Array<Expression>;
 
 	public function new(content:String) {
 		var trimmedContent = content.trim();

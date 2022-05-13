@@ -9,9 +9,10 @@ class Block {
 	static private var keys = ["vars", "output"];
 
 	private var constsBlock:ConstsBlock;
-	private var outputBlock:OutputBlock;
 	private var name:String;
 	private var params:Array<String>;
+
+	public var outputBlock:OutputBlock;
 
 	public function new(name:String, params:Array<String>, content:String) {
 		this.name = name;

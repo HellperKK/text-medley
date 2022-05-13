@@ -90,7 +90,7 @@ class Expression {
 				case '#':
 					getBlock(newContent);
 
-				case _: getEnd(content);
+				case _: getEnd(newContent);
 			}
 
 			tokens.push(capture.content);

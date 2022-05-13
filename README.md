@@ -119,7 +119,7 @@ TODO
 You can build TextMeldey using Haxe (up to date) and Make like this
 
 ```
-haxe --main Compile --interp -D lang=$target
+haxe -cp src --main Compile --interp -D lang=$target
 ```
 
 where `$target` can be :
