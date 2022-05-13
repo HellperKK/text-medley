@@ -4,6 +4,67 @@ TextMeldey is a language dedicated to text generation. Its core is written in Ha
 
 /!\ Since TextMeldey uses regular expressions there may be some tiny differences accross plateforms.
 
+# The language
+
+The language is used to describe a set of rules, each having a set of blocks. Here's a simple example:
+
+```
+#main:
+    -output:
+        hello!
+        goodbye!
+        woops, I don't know what to say
+#end
+```
+
+It starts by a `#` followed bien an identifier and finished with the `#end` tag. Here I chose the `main` identifier as it is usally the starting point.
+
+Inside, you find a block named `output`. That block tell the expression that will be returned, which here will be randomly selected between `hello!`, `goodbye!` and `woops, I don't know what to say`. 
+
+The way it works is that the `output` block contains a series of expression, one per non-empty line and returns one randomly. Each expression is left-trimmed so the space before doesn't matter. However, if you want your expression to start with some space you can put it beetween `"` so it it kept from trimming.
+
+You can reference a rule inside exmpression by using its name the same way you declare it. The next example says randomly hello or goodbye to a random name:
+
+```
+#main:
+    -output:
+        hello #name!
+        goodbye #name!
+#end
+
+#name:
+    -output:
+        John
+        Paul
+        world
+#end
+```
+
+There is not restrictions on rules use and you can event make recursive references.
+
+The last feature is the use on variables. Since referencing a rule always outputs a random result, or when you want to reuse a long expression, you can define variables and use them later, uson the `vars` block, like this:
+
+```
+#main:
+    -vars:
+        $name = #name
+
+    -output:
+        hello $name!
+        goodbye $name!
+        this time it is $name and only $name
+#end
+
+#name:
+    -output:
+        John
+        Paul
+        world
+#end
+```
+
+Here on the last output, $name always has the same content.
+
 # Usage
 
 There are two ways of using TextMedley : either with its interpreter or its compiler.
