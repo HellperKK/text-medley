@@ -1,5 +1,7 @@
 package compilers.javascript;
 
+using Lambda;
+
 @:expose
 class Compiler extends BaseCompiler {
 	public override function new() {
@@ -26,10 +28,11 @@ class Compiler extends BaseCompiler {
 	}
 
 	public override function outputBlock(exps:Array<Expression>):String {
-		var lams = exps.map(function(exp) {
-			return "(() => " + exp.compile(this) + ")";
-		});
-		return "return pick_random([\n" + indent(lams.join(",\n")) + "\n])();";
+		var lams = exps.mapi((index, exp) -> {
+			return 'if (_rand === ${index}) {\n${indent("return " + exp.compile(this) + ";")}\n}';
+			// return "(() => " + exp.compile(this) + ")";
+		}).join("\n");
+		return 'const _rand = randomNum(${exps.length});\n${lams}';
 	}
 
 	public override function expression(exprs:Array<String>):String {

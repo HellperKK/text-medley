@@ -7,7 +7,7 @@ class Compiler extends BaseCompiler {
 	public override function new() {
 		super();
 
-		FUN_STD = Macros.importString("std.rb");
+		FUN_STD = ""; // Macros.importString("std.rb");
 	}
 
 	public override function blockList(blocks:Map<String, Block>):String {

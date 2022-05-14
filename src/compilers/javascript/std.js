@@ -1,3 +1,3 @@
-function pick_random(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
+function randomNum(max) {
+  return Math.floor(Math.random() * max);
 }
