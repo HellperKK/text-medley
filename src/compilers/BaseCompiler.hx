@@ -3,7 +3,7 @@ package compilers;
 using StringTools;
 
 @:expose
-class BaseCompiler {
+abstract class BaseCompiler {
 	private var INDENT_STRING = "    ";
 	private var FUN_STD = "";
 
@@ -21,35 +21,19 @@ class BaseCompiler {
 		return Macros.joinBlocks(FUN_STD, str);
 	}
 
-	public function blockList(blocks:Map<String, Block>):String {
-		throw "To be implemented";
-	}
+	abstract public function blockList(blocks:Map<String, Block>):String;
 
-	public function constBlock(consts:Array<String>):String {
-		throw "To be implemented";
-	}
+	abstract public function constBlock(consts:Array<String>):String;
 
-	public function const(name:String, content:String):String {
-		throw "To be implemented";
-	}
+	abstract public function const(name:String, content:String):String;
 
-	public function outputBlock(exps:Array<Expression>):String {
-		throw "To be implemented";
-	}
+	abstract public function outputBlock(exps:Array<Expression>):String;
 
-	public function expression(str:Array<String>):String {
-		throw "To be implemented";
-	}
+	abstract public function expression(str:Array<String>):String;
 
-	public function strToken(str:String):String {
-		throw "To be implemented";
-	}
+	abstract public function strToken(str:String):String;
 
-	public function varToken(str:String):String {
-		throw "To be implemented";
-	}
+	abstract public function varToken(str:String):String;
 
-	public function blkToken(str:String):String {
-		throw "To be implemented";
-	}
+	abstract public function blkToken(str:String):String;
 }
