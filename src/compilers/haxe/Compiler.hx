@@ -8,7 +8,7 @@ class Compiler extends compilers.BaseCompiler {
 		FUN_STD = Macros.importString("std.hx.tpl");
 	}
 
-	public function global(str:String):String {
+	public override function global(str:String):String {
 		var body = super.global(str);
 
 		return 'class TextMedleyGen {\n${indent(body)}\n}';
