@@ -27,11 +27,13 @@ class Compiler extends BaseCompiler {
 	}
 
 	public function const(name:String, content:String):String {
-		if (varNames.indexOf(name) != -1) {
-			return '${name} = ${content};';
+		if (varNames.indexOf(name) == -1) {
+			varNames.push(name);
+
+			return 'let ${name} = ${content};';
 		}
 
-		return 'let ${name} = ${content};';
+		return '${name} = ${content};';
 	}
 
 	public function outputBlock(exps:Array<Expression>):String {
