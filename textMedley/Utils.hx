@@ -1,4 +1,4 @@
-package;
+package textMedley;
 
 using StringTools;
 

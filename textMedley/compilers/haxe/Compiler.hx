@@ -1,7 +1,7 @@
-package compilers.haxe;
+package textMedley.compilers.haxe;
 
 @:expose
-class Compiler extends compilers.BaseCompiler {
+class Compiler extends BaseCompiler {
 	public function new() {
 		super();
 

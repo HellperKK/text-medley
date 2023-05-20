@@ -1,4 +1,4 @@
-package compilers.typescript;
+package textMedley.compilers.typescript;
 
 using Lambda;
 

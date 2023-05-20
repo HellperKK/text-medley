@@ -1,8 +1,8 @@
 # Definition
 
-TextMeldey is a language dedicated to text generation. Its core is written in Haxe so it can be used in all contexts that Haxe can target. 
+textMedley is a language dedicated to text generation. Its core is written in Haxe so it can be used in all contexts that Haxe can target. 
 
-/!\ Since TextMeldey uses regular expressions there may be some tiny differences accross plateforms.
+/!\ Since textMedley uses regular expressions there may be some tiny differences accross plateforms.
 
 # The language
 
@@ -116,7 +116,7 @@ TODO
 
 ## How to build
 
-You can build TextMeldey using Haxe (up to date) and Make like this
+You can build textMedley using Haxe (up to date) and Make like this
 
 ```
 haxe -cp src --main Compile --interp -D lang=$target

@@ -1,4 +1,4 @@
-package;
+package textMedley;
 
 #if macro
 import haxe.macro.Context;

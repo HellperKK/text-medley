@@ -1,7 +1,7 @@
-package;
+package textMedley;
 
 import haxe.macro.Expr;
-import Expression;
+import textMedley.Expression;
 
 using StringTools;
 
@@ -12,7 +12,7 @@ class Block {
 	private var name:String;
 	private var params:Array<String>;
 
-	public var outputBlock:OutputBlock;
+	public var outputBlock:textMedley.OutputBlock;
 
 	public function new(name:String, params:Array<String>, content:String) {
 		this.name = name;
@@ -70,7 +70,7 @@ class Block {
 		return outputBlock.eval(blocks, consts);
 	}
 
-	public function compile(compiler:compilers.BaseCompiler) {
+	public function compile(compiler:textMedley.compilers.BaseCompiler) {
 		var constsStr = "";
 		if (constsBlock != null) {
 			constsStr = constsBlock.compile(compiler) + "\n";

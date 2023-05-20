@@ -1,4 +1,4 @@
-package;
+package textMedley;
 
 #if !js
 import haxe.io.Path;

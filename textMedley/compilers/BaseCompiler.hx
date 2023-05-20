@@ -1,4 +1,4 @@
-package compilers;
+package textMedley.compilers;
 
 using StringTools;
 

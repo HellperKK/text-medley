@@ -1,6 +1,6 @@
-package;
+package textMedley;
 
-import compilers.BaseCompiler;
+import textMedley.compilers.BaseCompiler;
 #if macro
 import haxe.macro.Expr;
 import haxe.macro.Context;

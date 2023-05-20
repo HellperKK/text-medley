@@ -1,4 +1,4 @@
-package;
+package textMedley;
 
 using StringTools;
 
@@ -25,7 +25,7 @@ class OutputBlock {
 		return expressions[index];
 	}
 
-	public function compile(compiler:compilers.BaseCompiler) {
+	public function compile(compiler:textMedley.compilers.BaseCompiler) {
 		return compiler.outputBlock(expressions);
 	}
 

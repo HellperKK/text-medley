@@ -1,4 +1,4 @@
-package compilers.ocaml;
+package textMedley.compilers.ocaml;
 
 @:expose
 class Compiler extends BaseCompiler {

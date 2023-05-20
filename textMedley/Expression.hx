@@ -1,6 +1,6 @@
-package;
+package textMedley;
 
-import Token;
+import textMedley.Token;
 #if macro
 import haxe.macro.Expr;
 import haxe.macro.Context;
@@ -105,7 +105,7 @@ class Expression {
 		].join("");
 	}
 
-	public function compile(compiler:compilers.BaseCompiler) {
+	public function compile(compiler:textMedley.compilers.BaseCompiler) {
 		return compiler.expression([
 			for (token in tokens)
 				switch (token) {

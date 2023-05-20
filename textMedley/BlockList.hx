@@ -1,4 +1,4 @@
-package;
+package textMedley;
 
 import haxe.macro.Expr.FieldType;
 import haxe.macro.Expr.Access;
@@ -62,7 +62,7 @@ class BlockList {
 		return eval("main");
 	}
 
-	public function compile(compiler:compilers.BaseCompiler) {
+	public function compile(compiler:textMedley.compilers.BaseCompiler) {
 		var res = compiler.blockList(blocks);
 
 		return compiler.global(res);

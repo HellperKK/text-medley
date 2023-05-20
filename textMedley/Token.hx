@@ -1,4 +1,4 @@
-package;
+package textMedley;
 
 enum Token {
 	Str(content:String);

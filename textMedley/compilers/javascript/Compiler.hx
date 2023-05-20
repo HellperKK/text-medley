@@ -1,4 +1,4 @@
-package compilers.javascript;
+package textMedley.compilers.javascript;
 
 using Lambda;
 
