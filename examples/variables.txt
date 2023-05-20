@@ -1,0 +1,16 @@
+#main:
+    -vars:
+        $name = #name
+
+    -output:
+        hello $name!
+        goodbye $name!
+        this time it is $name and only $name
+#end
+
+#name:
+    -output:
+        John
+        Paul
+        world
+#end

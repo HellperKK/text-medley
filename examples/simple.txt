@@ -1,0 +1,6 @@
+#main:
+    -output:
+        hello world!
+        goodbye world!
+        this time it is $name and only $name
+#end
