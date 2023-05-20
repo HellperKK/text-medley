@@ -77,7 +77,7 @@ class Expression {
 
 		res.push(new Expression(content.substring(lastI, i)));
 
-		return {size: i, res: res};
+		return {size: i + 1, res: res};
 	}
 
 	public static function getString(content:String) {
