@@ -35,20 +35,56 @@ class Expression {
 		return {content: Var(content.substring(1, i)), next: i};
 	}
 
-	public static function getBlock(content:String) {
+	public static function getBlock(content:String):Capture {
 		var i = 1;
 
 		while (i < content.length && ~/[a-zA-z]/.match(content.charAt(i))) {
 			i++;
 		}
 
-		return {content: Blk(content.substring(1, i), []), next: i};
+		var name = content.substring(1, i);
+		var res = [];
+
+		if (content.charAt(i) == "(") {
+			var parse = parseBlock(content.substring(i));
+			i += parse.size;
+			res = parse.res;
+		}
+
+		return {content: Blk(name, res), next: i};
+	}
+
+	public static function parseBlock(content:String) {
+		var i = 1;
+		var lastI = 1;
+		var res = [];
+
+		while (content.charAt(i) != ")" && i < content.length) {
+			i += switch (content.charAt(i)) {
+				case '"':
+					getString(content.substring(i)).length;
+
+				case ',':
+					res.push(new Expression(content.substring(lastI, i)));
+					lastI = i + 1;
+					1;
+
+				case "$": getVar(content.substring(i)).next;
+				case "#": getBlock(content.substring(i)).next;
+				case _: 1;
+			};
+		}
+
+		res.push(new Expression(content.substring(lastI, i)));
+
+		return {size: i, res: res};
 	}
 
 	public static function getString(content:String) {
 		var i = 1;
 
 		while (i < content.length && content.charAt(i) != '"') {
+			trace(content.charAt(i));
 			if (content.charAt(i) == '\\') {
 				i++;
 			}
@@ -60,7 +96,7 @@ class Expression {
 			throw 'missing " for string end';
 		}
 
-		return {content: Str(content.substring(1, i)), next: i + 1};
+		return content.substring(1, i);
 	}
 
 	public static function getEnd(content:String) {
@@ -77,13 +113,16 @@ class Expression {
 
 	public function new(content:String) {
 		tokens = [];
-		var newContent = ~/^\s/.map(content, _e -> "");
+		var newContent = content.ltrim();
+
+		if (newContent.charAt(0) == '"') {
+			newContent = getString(newContent);
+		} else {
+			newContent = newContent.rtrim();
+		}
 
 		while (newContent != "") {
 			var capture:Capture = switch (newContent.charAt(0)) {
-				case '"':
-					getString(newContent);
-
 				case '$':
 					getVar(newContent);
 
@@ -113,8 +152,8 @@ class Expression {
 						compiler.strToken(content);
 					case Var(name):
 						compiler.varToken(name);
-					case Blk(name, _params):
-						compiler.blkToken(name);
+					case Blk(name, params):
+						compiler.blkToken(name, params);
 				}
 		]);
 	}

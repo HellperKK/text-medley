@@ -44,7 +44,7 @@ class Compiler extends BaseCompiler {
 		return str;
 	}
 
-	public function blkToken(str:String):String {
+	public function blkToken(str:String, params:Array<Expression>):String {
 		return makeName(str);
 	}
 }

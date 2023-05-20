@@ -10,8 +10,8 @@ class Block {
 
 	private var constsBlock:ConstsBlock;
 	private var name:String;
-	private var params:Array<String>;
 
+	public var params:Array<String>;
 	public var outputBlock:textMedley.OutputBlock;
 
 	public function new(name:String, params:Array<String>, content:String) {
@@ -56,11 +56,11 @@ class Block {
 		}
 	}
 
-	public function eval(blocks:BlockList, params:Array<Token>) {
+	public function eval(blocks:BlockList, params:Array<Expression>) {
 		var consts = new Map<String, String>();
 
 		for (i in 0...this.params.length) {
-			consts.set(this.params[i], Expression.evalToken(blocks, consts, params[i]));
+			consts.set(this.params[i], params[i].eval(blocks, consts));
 		}
 
 		if (constsBlock != null) {

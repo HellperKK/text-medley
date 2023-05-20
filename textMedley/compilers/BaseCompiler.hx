@@ -35,5 +35,5 @@ abstract class BaseCompiler {
 
 	abstract public function varToken(str:String):String;
 
-	abstract public function blkToken(str:String):String;
+	abstract public function blkToken(str:String, params:Array<Expression>):String;
 }

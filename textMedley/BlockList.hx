@@ -17,7 +17,7 @@ class BlockList {
 	private var recCount:Int = 0;
 
 	public function new(input:String) {
-		var blockStart = ~/#([a-zA-Z]+)/;
+		var blockStart = ~/#([a-zA-Z]+)(\(([^)]*?)\))?/;
 		var blockEnd = ~/#end/;
 		var inputPart = input;
 		blocks = new Map<String, Block>();
@@ -25,12 +25,13 @@ class BlockList {
 		while (blockStart.match(inputPart)) {
 			var part = blockStart.matchedRight();
 			var ruleName = blockStart.matched(1);
+			var params = if (blockStart.matched(3) != null) blockStart.matched(3).split(",").map(arg -> arg.trim()) else [];
 
 			if (!blockEnd.match(part)) {
 				throw 'no closing "#end" for rule "#${ruleName}"';
 			}
 
-			blocks.set(ruleName, new Block(ruleName, [], blockEnd.matchedLeft()));
+			blocks.set(ruleName, new Block(ruleName, params, blockEnd.matchedLeft()));
 			inputPart = blockEnd.matchedRight();
 		}
 
@@ -38,7 +39,7 @@ class BlockList {
 		// ~/#([a-zA-Z]+?)(\((\$[a-zA-Z]+( *, *\$[a-zA-Z]+)*)\))?:((.|\s)+?)end#/
 	}
 
-	public function eval(name:String, params:Array<Token> = null) {
+	public function eval(name:String, params:Array<Expression> = null) {
 		if (params == null) {
 			params = [];
 		}

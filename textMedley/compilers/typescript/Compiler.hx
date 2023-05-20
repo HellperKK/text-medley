@@ -14,10 +14,12 @@ class Compiler extends BaseCompiler {
 	}
 
 	public function blockList(blocks:Map<String, Block>):String {
-		var defs = [
-			for (block in blocks.keyValueIterator())
-				'function ${makeName(block.key)}():string {\n${indent(block.value.compile(this) + '\nthrow new Error("index out of range");')}\n}'
-		];
+		var defs = [];
+
+		for (block in blocks.keyValueIterator()) {
+			varNames = block.value.params;
+			defs.push('function ${makeName(block.key)}(${block.value.params.join(", ")}):string {\n${indent(block.value.compile(this) + '\nthrow new Error("index out of range");')}\n}');
+		}
 
 		return defs.join("\n\n");
 	}
@@ -56,7 +58,7 @@ class Compiler extends BaseCompiler {
 		return str;
 	}
 
-	public function blkToken(str:String):String {
-		return makeName(str) + "()";
+	public function blkToken(str:String, params:Array<Expression>):String {
+		return makeName(str) + '(${params.map(param -> param.compile(this)).join(",")})';
 	}
 }
