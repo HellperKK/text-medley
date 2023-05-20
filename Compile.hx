@@ -33,7 +33,6 @@ class Compile {
 			entries = new List<haxe.zip.Entry>();
 		if (inDir == null)
 			inDir = dir;
-		trace(dir);
 		for (file in sys.FileSystem.readDirectory(dir)) {
 			var path = haxe.io.Path.join([dir, file]);
 			if (sys.FileSystem.isDirectory(path)) {
