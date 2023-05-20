@@ -10,7 +10,7 @@ class Compiler extends BaseCompiler {
 
 	public function makeFun(pair:{key:String, value:Block}, rec:String):String {
 		var newName = makeName(pair.key);
-		return '${rec} ${newName} () =\n${indent(pair.value.compile(this))}';
+		return '${rec} ${newName} ${separateArray(pair.value.params)} =\n${indent(pair.value.compile(this))}';
 	}
 
 	public function blockList(blocks:Map<String, Block>):String {
@@ -55,6 +55,10 @@ class Compiler extends BaseCompiler {
 	}
 
 	public function blkToken(str:String, params:Array<Expression>):String {
-		return '(${makeName(str)} ())';
+		return '(${makeName(str)} ${separateArray(params.map(param -> param.compile(this)))})';
+	}
+
+	private function separateArray(arr:Array<String>) {
+		return if (arr.length == 0) '()' else arr.join(' ');
 	}
 }

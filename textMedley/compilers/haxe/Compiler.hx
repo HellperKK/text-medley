@@ -17,7 +17,7 @@ class Compiler extends BaseCompiler {
 	public function blockList(blocks:Map<String, Block>):String {
 		return [
 			for (block in blocks.keyValueIterator())
-				'static public function ${makeName(block.key)}() {\n${indent(block.value.compile(this))}\n}'
+				'static public function ${makeName(block.key)}(${block.value.params.join(", ")}) {\n${indent(block.value.compile(this))}\n}'
 		].join("\n\n");
 	}
 
@@ -47,6 +47,6 @@ class Compiler extends BaseCompiler {
 	}
 
 	public function blkToken(str:String, params:Array<Expression>):String {
-		return '${makeName(str)}()';
+		return '${makeName(str)}(${params.map(param -> param.compile(this)).join(",")})';
 	}
 }
