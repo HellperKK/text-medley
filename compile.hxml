@@ -1,4 +1,3 @@
 --cpp bin/cpp
---class-path textMedley/executable
---main TextMedley
+--main textMedley.executable.TextMedley
 --library hxargs
