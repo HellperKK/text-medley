@@ -2,5 +2,5 @@
     -output:
         hello world!
         goodbye world!
-        this time it is $name and only $name
+        I don't know what to say
 #end
