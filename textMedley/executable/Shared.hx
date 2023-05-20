@@ -1,44 +1,48 @@
-package textMedley.command;
+package textMedley.executable;
 
-import haxe.io.Path;
-import sys.FileStat;
-import sys.FileSystem;
 import sys.io.File;
+import haxe.io.Path;
+import sys.FileSystem;
 
-class Command {
-	public static function main() {
+class Shared {
+	public static function run(args:Array<String>) {
 		var cfg = {
 			outputPath: null,
-			inputPath: null
+			inputPath: null,
+			eval: null,
 		}
 		var argHandler = hxargs.Args.generate([@doc("Set the output path")
 			["-o", "--output"] => function(path:String) cfg.outputPath = path, @doc("Set the input path")
 			["-i", "--input"] => function(path:String) cfg.inputPath = path,
+			@doc("Generates a text with no output")
+			["--eval"] => function(name:String) cfg.eval = name,
 
 			_ => function(arg:String) throw "Unknown command: " + arg
 		]);
-
-		var args = Sys.args();
-		Sys.setCwd(args.pop());
 
 		if (args.length == 0)
 			Sys.println(argHandler.getDoc());
 		else
 			argHandler.parse(args);
 
-		if (cfg.outputPath == null) {
-			Sys.println("An output path is mandatory");
-			Sys.exit(0);
-		}
-
 		if (cfg.inputPath == null) {
-			Sys.println("An input path is mandatory");
-			Sys.exit(0);
+			throw "An input path is mandatory";
 		}
 
 		if (!FileSystem.exists(cfg.inputPath)) {
-			Sys.println("The input file doesn't exist");
+			throw "The input file doesn't exist";
+		}
+
+		var code = File.getContent(cfg.inputPath);
+		var blockList = new textMedley.BlockList(code);
+
+		if (cfg.eval != null) {
+			Sys.println(blockList.eval(cfg.eval));
 			Sys.exit(0);
+		}
+
+		if (cfg.outputPath == null) {
+			throw "An output path is mandatory";
 		}
 
 		var extension = Path.extension(cfg.outputPath);
@@ -52,8 +56,6 @@ class Command {
 			default: throw 'Uknown file extension : ${extension}';
 		}
 
-		var code = File.getContent(cfg.inputPath);
-		var blockList = new textMedley.BlockList(code);
 		var result = blockList.compile(compiler);
 		File.saveContent(cfg.outputPath, result);
 	}
