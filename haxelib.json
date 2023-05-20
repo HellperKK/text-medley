@@ -3,7 +3,7 @@
     "url": "https://github.com/HellperKK/text-medley",
     "license": "MIT",
     "tags": [],
-    "description": "A programming language dedicated to text generation ",
+    "description": "A programming language dedicated to text generation.",
     "version": "0.0.1",
     "classPath": ".",
     "releasenote": "First release.",
