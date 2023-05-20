@@ -16,7 +16,7 @@ class Compiler extends BaseCompiler {
 	public function blockList(blocks:Map<String, Block>):String {
 		var defs = [
 			for (block in blocks.keyValueIterator())
-				'function ${makeName(block.key)}():string {\n${indent(block.value.compile(this))}\n}'
+				'function ${makeName(block.key)}():string {\n${indent(block.value.compile(this) + '\nthrow new Error("index out of range");')}\n}'
 		];
 
 		return defs.join("\n\n");
