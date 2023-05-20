@@ -6,7 +6,7 @@
         #greet($name)
 #end
 
-#greet(name):
+#greet($name):
     -output:
         hello $name
         goodbye $name

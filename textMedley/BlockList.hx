@@ -25,7 +25,14 @@ class BlockList {
 		while (blockStart.match(inputPart)) {
 			var part = blockStart.matchedRight();
 			var ruleName = blockStart.matched(1);
-			var params = if (blockStart.matched(3) != null) blockStart.matched(3).split(",").map(arg -> arg.trim()) else [];
+			var params = if (blockStart.matched(3) != null) blockStart.matched(3).split(",").map(arg -> {
+				var reg = ~/\$([a-zA-Z]+)/;
+				if (reg.match(arg)) {
+					return reg.matched(1);
+				} else {
+					throw 'invalid param name ${arg}';
+				}
+			}) else [];
 
 			if (!blockEnd.match(part)) {
 				throw 'no closing "#end" for rule "#${ruleName}"';
