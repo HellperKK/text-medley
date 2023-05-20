@@ -1,5 +1,5 @@
 {
-    "name": "textMeldey",
+    "name": "textMedley",
     "url": "https://github.com/HellperKK/text-medley",
     "license": "MIT",
     "tags": [],
@@ -10,5 +10,8 @@
     "contributors": [
         "HellperKK"
     ],
-    "dependencies": {}
+    "dependencies": {
+        "hxargs": "3.0.2"
+    },
+    "main": "textMedley.command.Command"
 }
