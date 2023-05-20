@@ -27,10 +27,14 @@ class Macros {
 	}
 
 	#if macro
-	public static function codify(path:String) {
+	public static function codify(fileName:String) {
 		var fields = Context.getBuildFields();
 
-		var code = File.getContent(path);
+		var posInfos = Context.getPosInfos(Context.currentPos());
+		var directory = Path.directory(posInfos.file);
+		var filePath:String = Path.join([directory, fileName]);
+
+		var code = File.getContent(filePath);
 		var blockList = new BlockList(code);
 
 		for (expr in blockList.toExpr()) {
