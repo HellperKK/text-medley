@@ -178,8 +178,15 @@ class Expression {
 				case Str(content):
 					return macro $v{Utils.escape(content)};
 				case Var(name): return (macro $i{name});
-				case Blk(name, _params):
-					return {pos: Context.currentPos(), expr: ECall({pos: Context.currentPos(), expr: EConst(CIdent(name))}, [])};
+				case Blk(name, params):
+					var paramsExpr = params.map(param -> param.toExpr());
+					return {
+						pos: Context.currentPos(),
+						expr: ECall({
+							pos: Context.currentPos(),
+							expr: EConst(CIdent(name))
+						}, paramsExpr)
+					};
 			}
 		});
 

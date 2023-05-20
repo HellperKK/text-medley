@@ -83,9 +83,16 @@ class Block {
 	public function toExpr() {
 		var code:Array<Expr> = if (constsBlock != null) constsBlock.toExpr().concat(outputBlock.toExpr()) else outputBlock.toExpr();
 
+		var args:Array<FunctionArg> = this.params.map(param -> {
+			name: param,
+			meta: null,
+			type: null,
+			value: null,
+			opt: null
+		});
 		return {
 			expr: macro $b{code},
-			args: [],
+			args: $v{args},
 			params: [],
 			ret: null // (macro:String)
 		};
