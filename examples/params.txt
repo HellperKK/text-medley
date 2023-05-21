@@ -1,15 +1,18 @@
 #main:
-    -vars:
-        $name = #name
-
     -output:
-        #greet($name)
+        #greet(#name)
+        #greettwo(#name, Bond)
 #end
 
 #greet($name):
     -output:
         hello $name
         goodbye $name
+#end
+
+#greettwo($name, $lastname):
+    -output:
+        my name is $lastname, $name $lastname
 #end
 
 #name:
