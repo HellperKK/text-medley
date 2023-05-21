@@ -9,58 +9,53 @@ using StringTools;
 
 class Compile {
 	public static function main() {
-		var scripts = readDir('./src');
-		var lang = Context.definedValue("lang");
+		var scripts = readDir('./textMedley', ["textMedley/executable"]);
 
-		var commandLang = switch (lang) {
-			case "js":
-				"-js test/textMedley.js";
+		var commandLang = "";
+		#if (lang == "js")
+		commandLang = "-js test/textMedley.js";
+		#elseif (lang == "php")
+		commandLang = "-php test/php";
+		#elseif (lang == "cpp")
+		commandLang = "-cpp test/cpp";
+		#elseif (lang == "cs")
+		commandLang = "-cs test/cs";
+		#elseif (lang == "java")
+		commandLang = "-java test/java";
+		#elseif (lang == "jvm")
+		commandLang = "-jvm test/textMedley.jar";
+		#elseif (lang == "python")
+		commandLang = "-python test/textMedley.py";
+		#elseif (lang == "lua")
+		commandLang = "-lua test/textMedley.lua";
+		#else
+		throw 'language not supported';
+		#end
 
-			case "php":
-				"-php test/php";
-
-			case "cpp":
-				"-cpp test/cpp";
-
-			case "cs":
-				"-cs test/cs";
-
-			case "java":
-				"-java test/java";
-
-			case "jvm":
-				"-jvm test/textMedley.jar";
-
-			case "python":
-				"-python test/textMedley.py";
-
-			case "lua":
-				"-lua test/textMedley.lua";
-
-			case _: throw 'language ${lang} not supported';
-		};
-
-		var command = 'haxe -cp src -dce no ${commandLang} ${scripts.join(' ')}';
-
+		var command = 'haxe -dce no ${commandLang} ${scripts.join(' ')}';
 		trace(command);
-
 		Sys.command(command);
 	}
 
-	public static function readDir(path):Array<String> {
+	public static function readDir(path:String, excludes:Array<String>):Array<String> {
 		var files = FileSystem.readDirectory(path);
 
 		var out = [];
 
 		for (file in files) {
 			var truePath = Path.join([path, file]);
+			trace(truePath);
+
+			if (excludes.contains(truePath)) {
+				continue;
+			}
 
 			if (Path.extension(file) == 'hx') {
-				out.push(Path.withoutExtension(truePath).replace('/', '.').replace('src.', ''));
+				out.push(Path.withoutExtension(truePath).replace('/', '.'));
 			}
 
 			if (FileSystem.isDirectory(truePath)) {
-				var inners = readDir(truePath);
+				var inners = readDir(truePath, excludes);
 
 				for (inner in inners) {
 					out.push(inner);
