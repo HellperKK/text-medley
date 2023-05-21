@@ -3,7 +3,6 @@ package textMedley;
 #if !js
 import haxe.io.Path;
 import sys.FileSystem;
-import haxe.macro.Context;
 
 using StringTools;
 
