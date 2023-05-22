@@ -16,8 +16,8 @@ class FunctionBlock extends BaseBlock {
 		this.content = content;
 	}
 
-	public function eval(blocks:BlockList, params:Array<Expression>) {
-		return content(params.map(param -> param.eval(blocks, new Map<String, String>())));
+	public function eval(blocks:BlockList, params:Array<String>) {
+		return content(params);
 	}
 
 	public function compile(compiler:textMedley.compilers.BaseCompiler) {

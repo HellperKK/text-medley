@@ -1,0 +1,14 @@
+#main:
+    -output:
+        #count(0)
+#end
+
+#count($value):
+    -output:
+        "$value, #count(#plus($value,1))"
+        "$value, #count(#plus($value,1))"
+        "$value, #count(#plus($value,1))"
+        "$value, #count(#plus($value,1))"
+        "$value, #count(#plus($value,1))"
+        end
+#end

@@ -21,7 +21,7 @@ class Expression {
 			case Var(name):
 				consts[name];
 			case Blk(name, params):
-				blocks.eval(name, params);
+				blocks.eval(name, params.map(param -> param.eval(blocks, consts)));
 		};
 	}
 
@@ -84,7 +84,6 @@ class Expression {
 		var i = 1;
 
 		while (i < content.length && content.charAt(i) != '"') {
-			trace(content.charAt(i));
 			if (content.charAt(i) == '\\') {
 				i++;
 			}

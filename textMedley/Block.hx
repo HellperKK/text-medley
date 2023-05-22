@@ -55,11 +55,11 @@ class Block extends BaseBlock {
 		}
 	}
 
-	public function eval(blocks:BlockList, params:Array<Expression>) {
+	public function eval(blocks:BlockList, params:Array<String>) {
 		var consts = new Map<String, String>();
 
 		for (i in 0...this.params.length) {
-			consts.set(this.params[i], params[i].eval(blocks, consts));
+			consts.set(this.params[i], params[i]);
 		}
 
 		if (constsBlock != null) {

@@ -50,9 +50,19 @@ class BlockList {
 		blocks = new Map<String, BaseBlock>();
 
 		blocks.set("if", new FunctionBlock("if", Definitions.condition));
+		blocks.set("concat", new FunctionBlock("concat", Definitions.concat));
+		blocks.set("plus", new FunctionBlock("plus", Definitions.plus));
+		blocks.set("minus", new FunctionBlock("minus", Definitions.minus));
+		blocks.set("times", new FunctionBlock("times", Definitions.times));
+		blocks.set("divide", new FunctionBlock("divide", Definitions.divide));
+		blocks.set("power", new FunctionBlock("power", Definitions.power));
+		blocks.set("modulo", new FunctionBlock("modulo", Definitions.modulo));
+		blocks.set("clamp", new FunctionBlock("clamp", Definitions.clamp));
+		blocks.set("min", new FunctionBlock("min", Definitions.min));
+		blocks.set("max", new FunctionBlock("max", Definitions.max));
 	}
 
-	public function eval(name:String, params:Array<Expression> = null) {
+	public function eval(name:String, params:Array<String> = null) {
 		if (params == null) {
 			params = [];
 		}
