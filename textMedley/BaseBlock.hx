@@ -15,6 +15,6 @@ abstract class BaseBlock {
 	public abstract function mustBeCompiled():Bool;
 
 	#if macro
-	public abstract function toExpr():Function;
+	public abstract function toExpr(blocks:Map<String, BaseBlock>):Function;
 	#end
 }

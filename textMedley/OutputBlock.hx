@@ -30,14 +30,14 @@ class OutputBlock {
 	}
 
 	#if macro
-	public function toExpr() {
+	public function toExpr(blocks:Map<String, BaseBlock>) {
 		var code:Array<Expr> = [];
 
 		code.push(macro var i = Math.floor(Math.random() * $v{expressions.length}));
 
 		for (i in 0...expressions.length) {
 			var x = (macro if (i == $v{i}) {
-				return ${expressions[i].toExpr()}
+				return ${expressions[i].toExpr(blocks)}
 			});
 
 			code.push(x);

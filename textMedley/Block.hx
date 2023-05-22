@@ -83,8 +83,8 @@ class Block extends BaseBlock {
 	}
 
 	#if macro
-	public function toExpr():Function {
-		var code:Array<Expr> = if (constsBlock != null) constsBlock.toExpr().concat(outputBlock.toExpr()) else outputBlock.toExpr();
+	public function toExpr(blocks:Map<String, BaseBlock>):Function {
+		var code:Array<Expr> = if (constsBlock != null) constsBlock.toExpr(blocks).concat(outputBlock.toExpr(blocks)) else outputBlock.toExpr(blocks);
 
 		var args:Array<FunctionArg> = this.params.map(param -> {
 			name: param,

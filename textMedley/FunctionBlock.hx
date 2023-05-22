@@ -29,7 +29,7 @@ class FunctionBlock extends BaseBlock {
 	}
 
 	#if macro
-	public function toExpr():Function {
+	public function toExpr(blocks:Map<String, BaseBlock>):Function {
 		throw "Not implemented";
 	}
 	#end

@@ -42,12 +42,12 @@ class ConstsBlock {
 	}
 
 	#if macro
-	public function toExpr() {
+	public function toExpr(blocks:Map<String, BaseBlock>) {
 		var code:Array<Expr> = [];
 
 		for (pair in defs) {
 			var id = pair.name;
-			code.push(macro var $id = ${pair.content.toExpr()});
+			code.push(macro var $id = ${pair.content.toExpr(blocks)});
 		}
 
 		return code;
