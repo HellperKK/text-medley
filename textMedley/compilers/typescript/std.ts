@@ -6,8 +6,8 @@ function __if__(cond: string, ifTrue: string, iFalse: string): string {
   return parseFloat(cond) !== 0 && cond !== "" ? ifTrue : iFalse;
 }
 
-function __concat__(...params: Array<string>): string {
-  return params.join("");
+function __concat__(val: string, valb: string): string {
+  return val + valb;
 }
 
 function __plus__(num: string, numb: string): string {

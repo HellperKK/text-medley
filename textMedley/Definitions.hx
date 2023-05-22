@@ -11,7 +11,12 @@ class Definitions {
 	}
 
 	public static function concat(params:Array<String>):String {
-		return params.join("");
+		return switch (params) {
+			case [val, valb]:
+				val + valb;
+			case _:
+				throw "wrong param number in if function";
+		};
 	}
 
 	// functions on numbers
