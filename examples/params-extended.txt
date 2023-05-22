@@ -1,0 +1,26 @@
+#main:
+    -output:
+        #greet(#addTitle(#name))
+#end
+
+#greet($name):
+    -output:
+        hello $name
+        goodbye $name
+#end
+
+#addTitle($name):
+    -output:
+        Mr $name
+        Mrs $name
+        Lord $name
+        Doctor $name
+        Professor $name
+#end
+
+#name:
+    -output:
+        John
+        Paul
+        world
+#end

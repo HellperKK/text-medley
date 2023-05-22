@@ -1,0 +1,13 @@
+#main:
+    -output:
+        hello #name!
+        goodbye #name!
+        I don't know what to say
+#end
+
+#name:
+    -output:
+        John
+        Paul
+        world
+#end

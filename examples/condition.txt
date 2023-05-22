@@ -1,0 +1,4 @@
+#main:
+    -output:
+        #if(0, oui, non)
+#end
