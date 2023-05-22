@@ -8,6 +8,7 @@ import haxe.macro.Context;
 #end
 
 using StringTools;
+using Lambda;
 
 @:expose
 class BlockList {
@@ -87,7 +88,12 @@ class BlockList {
 	}
 
 	public function compile(compiler:textMedley.compilers.BaseCompiler) {
-		var res = compiler.blockList(blocks);
+		var filteredBlock = [
+			for (pair in blocks.keyValueIterator())
+				if (pair.value.mustBeCompiled()) pair.key => pair.value
+		];
+
+		var res = compiler.blockList(filteredBlock);
 
 		return compiler.global(res);
 	}

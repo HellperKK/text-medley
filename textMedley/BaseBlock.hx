@@ -12,6 +12,8 @@ abstract class BaseBlock {
 
 	public abstract function compile(compiler:textMedley.compilers.BaseCompiler):String;
 
+	public abstract function mustBeCompiled():Bool;
+
 	#if macro
 	public abstract function toExpr():Function;
 	#end

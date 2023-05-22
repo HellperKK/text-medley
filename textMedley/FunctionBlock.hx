@@ -24,6 +24,10 @@ class FunctionBlock extends BaseBlock {
 		return "";
 	}
 
+	public function mustBeCompiled() {
+		return false;
+	}
+
 	#if macro
 	public function toExpr():Function {
 		throw "Not implemented";

@@ -78,6 +78,10 @@ class Block extends BaseBlock {
 		return constsStr + outputBlock.compile(compiler);
 	}
 
+	public function mustBeCompiled() {
+		return true;
+	}
+
 	#if macro
 	public function toExpr():Function {
 		var code:Array<Expr> = if (constsBlock != null) constsBlock.toExpr().concat(outputBlock.toExpr()) else outputBlock.toExpr();
