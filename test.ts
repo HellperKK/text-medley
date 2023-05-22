@@ -56,3 +56,35 @@ function __min__(num: string, numb: string): string {
 function __max__(num: string, numb: string): string {
   return Math.max(parseFloat(num), parseFloat(numb)).toString();
 }
+
+
+function __count__(value):string {
+    const _rand = randomNum(6);
+    if (_rand === 0) {
+        return value + ", " + __count__(__plus__(value,"1"));
+    }
+    if (_rand === 1) {
+        return value + ", " + __count__(__plus__(value,"1"));
+    }
+    if (_rand === 2) {
+        return value + ", " + __count__(__plus__(value,"1"));
+    }
+    if (_rand === 3) {
+        return value + ", " + __count__(__plus__(value,"1"));
+    }
+    if (_rand === 4) {
+        return value + ", " + __count__(__plus__(value,"1"));
+    }
+    if (_rand === 5) {
+        return "end";
+    }
+    throw new Error("index out of range");
+}
+
+function __main__():string {
+    const _rand = randomNum(1);
+    if (_rand === 0) {
+        return __count__("0");
+    }
+    throw new Error("index out of range");
+}
