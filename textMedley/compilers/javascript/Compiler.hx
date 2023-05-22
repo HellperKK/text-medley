@@ -13,7 +13,7 @@ class Compiler extends BaseCompiler {
 		varNames = [];
 	}
 
-	public function blockList(blocks:Map<String, Block>):String {
+	public function blockList(blocks:Map<String, BaseBlock>):String {
 		var defs = [];
 
 		for (block in blocks.keyValueIterator()) {

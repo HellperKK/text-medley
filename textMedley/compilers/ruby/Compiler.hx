@@ -10,7 +10,7 @@ class Compiler extends BaseCompiler {
 		FUN_STD = ""; // Macros.importString("std.rb");
 	}
 
-	public function blockList(blocks:Map<String, Block>):String {
+	public function blockList(blocks:Map<String, BaseBlock>):String {
 		var defs = [
 			for (block in blocks.keyValueIterator())
 				'def ${makeName(block.key)}(${block.value.params.join(", ")})\n${indent(block.value.compile(this))}\nend'

@@ -14,7 +14,7 @@ class Compiler extends BaseCompiler {
 		return 'class TextMedleyGen {\n${indent(body)}\n}';
 	}
 
-	public function blockList(blocks:Map<String, Block>):String {
+	public function blockList(blocks:Map<String, BaseBlock>):String {
 		return [
 			for (block in blocks.keyValueIterator())
 				'static public function ${makeName(block.key)}(${block.value.params.join(", ")}) {\n${indent(block.value.compile(this))}\n}'

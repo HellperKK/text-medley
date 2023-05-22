@@ -5,13 +5,12 @@ import textMedley.Expression;
 
 using StringTools;
 
-class Block {
+class Block extends BaseBlock {
 	static private var keys = ["vars", "output"];
 
 	private var constsBlock:ConstsBlock;
 	private var name:String;
 
-	public var params:Array<String>;
 	public var outputBlock:textMedley.OutputBlock;
 
 	public function new(name:String, params:Array<String>, content:String) {
@@ -80,7 +79,7 @@ class Block {
 	}
 
 	#if macro
-	public function toExpr() {
+	public function toExpr():Function {
 		var code:Array<Expr> = if (constsBlock != null) constsBlock.toExpr().concat(outputBlock.toExpr()) else outputBlock.toExpr();
 
 		var args:Array<FunctionArg> = this.params.map(param -> {

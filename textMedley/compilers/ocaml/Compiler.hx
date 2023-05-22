@@ -8,12 +8,12 @@ class Compiler extends BaseCompiler {
 		FUN_STD = Macros.importString("std.ml");
 	}
 
-	public function makeFun(pair:{key:String, value:Block}, rec:String):String {
+	public function makeFun(pair:{key:String, value:BaseBlock}, rec:String):String {
 		var newName = makeName(pair.key);
 		return '${rec} ${newName} ${separateArray(pair.value.params)} =\n${indent(pair.value.compile(this))}';
 	}
 
-	public function blockList(blocks:Map<String, Block>):String {
+	public function blockList(blocks:Map<String, BaseBlock>):String {
 		var pairs = [
 			for (block in blocks.keyValueIterator())
 				block

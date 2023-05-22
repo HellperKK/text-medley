@@ -13,14 +13,14 @@ using StringTools;
 class BlockList {
 	static private var recMax = 500;
 
-	private var blocks:Map<String, Block>;
+	private var blocks:Map<String, BaseBlock>;
 	private var recCount:Int = 0;
 
 	public function new(input:String) {
 		var blockStart = ~/#([a-zA-Z]+)(\(([^)]*?)\))?/;
 		var blockEnd = ~/#end/;
 		var inputPart = input;
-		blocks = new Map<String, Block>();
+		initLib();
 
 		while (blockStart.match(inputPart)) {
 			var part = blockStart.matchedRight();
@@ -44,6 +44,12 @@ class BlockList {
 
 		// comment for regex shame
 		// ~/#([a-zA-Z]+?)(\((\$[a-zA-Z]+( *, *\$[a-zA-Z]+)*)\))?:((.|\s)+?)end#/
+	}
+
+	public function initLib() {
+		blocks = new Map<String, BaseBlock>();
+
+		blocks.set("if", new FunctionBlock("if", Definitions.condition));
 	}
 
 	public function eval(name:String, params:Array<Expression> = null) {

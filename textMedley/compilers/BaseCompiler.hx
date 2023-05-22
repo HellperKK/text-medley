@@ -21,7 +21,7 @@ abstract class BaseCompiler {
 		return Macros.joinBlocks(FUN_STD, str);
 	}
 
-	abstract public function blockList(blocks:Map<String, Block>):String;
+	abstract public function blockList(blocks:Map<String, BaseBlock>):String;
 
 	abstract public function constBlock(consts:Array<String>):String;
 
