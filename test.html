@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TextMedley</title>
+    <script src="./textMedley.js"></script>
+  </head>
+  <body>
+    <button id="run">Run</button>
+    <br>
+    <textarea id="input" cols="120" rows="30"></textarea>
+    <br />
+    <p id="output"></p>
+    <script>
+      document.querySelector("#run").addEventListener("click", function () {
+        let input = document.querySelector("#input").value;
+        let blockList = new textMedley.BlockList(input);
+        let res = blockList.eval_main();
+        console.log(res);
+        console.log(blockList);
+        document.querySelector("#output").innerText = res;
+      });
+    </script>
+  </body>
+</html>

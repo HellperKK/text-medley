@@ -1,4 +1,6 @@
 test
+!test/index.html
 bin
 text-medley.zip
-test.hxml
+textMedley.js
+#test.hxml

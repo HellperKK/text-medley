@@ -121,6 +121,8 @@ console.log(blockList.eval("main")) //same as calling eval_main()
 console.log(blockList.eval("other"))
 ```
 
+You can alose run `haxe test.hxml` to build a js interpreter that you can run by oneping test.html in the root folder.
+
 ## Compiler
 
 You can also build a compiler to translate TextMedley langage to any programming language that supports all of the following concepts :
