@@ -18,7 +18,7 @@ class Compiler extends BaseCompiler {
 
 		for (block in blocks.keyValueIterator()) {
 			varNames = block.value.params;
-			defs.push('function ${makeName(block.key)}(${block.value.params.join(", ")}) {\n${indent(block.value.compile(this) + '\nthrow new Error("index out of range");')}\n}');
+			defs.push('function ${makeName(block.key)}(${block.value.params.join(", ")}) {\n${indent(block.value.compile(this) + '\nreturn "";')}\n}');
 		}
 
 		return defs.join("\n\n");
@@ -32,18 +32,26 @@ class Compiler extends BaseCompiler {
 		if (varNames.indexOf(name) == -1) {
 			varNames.push(name);
 
-			return 'let ${name} = ${content};';
+			return 'let ${name}:string = ${content};';
 		}
 
 		return '${name} = ${content};';
 	}
 
 	public function outputBlock(exps:Array<Expression>):String {
+		var weightSum = exps.fold((exp, totalWeight) -> {
+			return totalWeight + exp.weight;
+		}, 0);
+
+		var acc = 0;
+
 		var lams = exps.mapi((index, exp) -> {
-			return 'if (_rand === ${index}) {\n${indent("return " + exp.compile(this) + ";")}\n}';
-			// return "(() => " + exp.compile(this) + ")";
+			var phrase = 'if (_rand < ${exp.weight + acc}) {\n${indent("return " + exp.compile(this) + ";")}\n}';
+			acc += exp.weight;
+			return phrase;
 		}).join("\n");
-		return 'const _rand = randomNum(${exps.length});\n${lams}';
+
+		return 'const _rand = randomNum(${weightSum})\n${lams}';
 	}
 
 	public function expression(exprs:Array<String>):String {

@@ -109,10 +109,18 @@ class Expression {
 	}
 
 	private var tokens:Array<Token>;
+	public var weight: Int = 1;
 
 	public function new(content:String) {
 		tokens = [];
 		var newContent = content.ltrim();
+
+		var weightEreg = ~/^<([0-9]+)>/;
+
+		if (weightEreg.match(newContent)) {
+			weight = Std.parseInt(weightEreg.matched(1));
+			newContent = weightEreg.matchedRight().ltrim();
+		}
 
 		if (newContent.charAt(0) == '"') {
 			newContent = getString(newContent);

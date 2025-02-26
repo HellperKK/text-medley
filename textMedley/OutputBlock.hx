@@ -1,6 +1,7 @@
 package textMedley;
 
 using StringTools;
+using Lambda;
 
 #if macro
 import haxe.macro.Expr;
@@ -17,30 +18,55 @@ class OutputBlock {
 	}
 
 	public function eval(blocks:BlockList, consts:Map<String, String>) {
-		return pick_random().eval(blocks, consts);
+		return  pick_random().eval(blocks, consts);
 	}
 
 	public function pick_random() {
-		var index = Math.floor(Math.random() * expressions.length);
-		return expressions[index];
+		var totalWeight = getWeightSum();
+
+		var randomValue = Math.floor(Math.random() * totalWeight);
+
+		var minWeight = 0;
+
+		for (expression in expressions) {
+			if (randomValue < expression.weight + minWeight) {
+				return expression;
+			}
+
+			minWeight += expression.weight;
+		}
+
+		return expressions[expressions.length - 1];
 	}
 
 	public function compile(compiler:textMedley.compilers.BaseCompiler) {
 		return compiler.outputBlock(expressions);
 	}
 
+	public function getWeightSum() {
+		return expressions.fold(function(expression, total) {
+			return total + expression.weight;
+		}, 0);
+	}
+
 	#if macro
 	public function toExpr(blocks:Map<String, BaseBlock>) {
-		var code:Array<Expr> = [];
+		var totalWeight = getWeightSum();
 
-		code.push(macro var i = Math.floor(Math.random() * $v{expressions.length}));
+		var code:Array<Expr> = [];
+		var sum = 0;
+
+		code.push(macro var i = Std.random($v{totalWeight}));
+		// code.push(macro var sum = 0);
 
 		for (i in 0...expressions.length) {
-			var x = (macro if (i == $v{i}) {
+			var x = (macro if (i < $v{expressions[i].weight + sum}) {
 				return ${expressions[i].toExpr(blocks)}
 			});
+			sum += expressions[i].weight;
 
 			code.push(x);
+			// code.push(macro sum += $v{expressions[i].weight});
 		}
 
 		code.push(macro return "");

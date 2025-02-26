@@ -4,17 +4,22 @@ using Lambda;
 
 @:expose
 class Compiler extends BaseCompiler {
+	private var varNames:Array<String>;
+
 	public function new() {
 		super();
 
-		FUN_STD = ""; // Macros.importString("std.rb");
+		FUN_STD = Macros.importString("std.rb");
+		varNames = [];
 	}
 
 	public function blockList(blocks:Map<String, BaseBlock>):String {
-		var defs = [
-			for (block in blocks.keyValueIterator())
-				'def ${makeName(block.key)}(${block.value.params.join(", ")})\n${indent(block.value.compile(this))}\nend'
-		];
+		var defs = [];
+
+		for (block in blocks.keyValueIterator()) {
+			varNames = block.value.params;
+			defs.push('def ${makeName(block.key)}(${block.value.params.join(", ")}) \n${indent(block.value.compile(this) + '\nreturn "";')}\nend');
+		}
 
 		return defs.join("\n\n");
 	}
@@ -24,12 +29,29 @@ class Compiler extends BaseCompiler {
 	}
 
 	public function const(name:String, content:String):String {
-		return name + " = " + content;
+		if (varNames.indexOf(name) == -1) {
+			varNames.push(name);
+
+			return '${name}:string = ${content};';
+		}
+
+		return '${name} = ${content};';
 	}
 
 	public function outputBlock(exps:Array<Expression>):String {
-		var lams = exps.mapi((index, exp) -> 'if _rand == ${index}\n${indent("return " + exp.compile(this))}\nend');
-		return '_rand = rand(0...${exps.length})\n${lams.join('\n')}';
+		var weightSum = exps.fold((exp, totalWeight) -> {
+			return totalWeight + exp.weight;
+		}, 0);
+
+		var acc = 0;
+
+		var lams = exps.mapi((index, exp) -> {
+			var phrase = 'if _rand < ${exp.weight + acc} \n${indent("return " + exp.compile(this))}\nend';
+			acc += exp.weight;
+			return phrase;
+		}).join("\n");
+
+		return '_rand = randomNum(${weightSum})\n${lams}';
 	}
 
 	public function expression(exprs:Array<String>):String {
@@ -45,6 +67,7 @@ class Compiler extends BaseCompiler {
 	}
 
 	public function blkToken(str:String, params:Array<Expression>):String {
-		return '${makeName(str)}(${params.map(param -> param.compile(this)).join(",")})';
-	}
+		var params = params.map(param -> param.compile(this)).join(",");
+		return '${makeName(str)}(${params})';
+	 }
 }

@@ -1,5 +1,7 @@
 package textMedley.compilers.haxe;
 
+using Lambda;
+
 @:expose
 class Compiler extends BaseCompiler {
 	public function new() {
@@ -17,7 +19,7 @@ class Compiler extends BaseCompiler {
 	public function blockList(blocks:Map<String, BaseBlock>):String {
 		return [
 			for (block in blocks.keyValueIterator())
-				'static public function ${makeName(block.key)}(${block.value.params.join(", ")}) {\n${indent(block.value.compile(this))}\n}'
+				'static public function ${makeName(block.key)}(${block.value.params.join(", ")}) {\n${indent(block.value.compile(this))}\nreturn "";\n}'
 		].join("\n\n");
 	}
 
@@ -30,8 +32,19 @@ class Compiler extends BaseCompiler {
 	}
 
 	public function outputBlock(exps:Array<Expression>):String {
-		var lams = exps.map(exp -> '() -> ${exp.compile(this)}');
-		return 'return pick_random([${lams.join(",\n")}])();';
+		var weightSum = exps.fold((exp, totalWeight) -> {
+			return totalWeight + exp.weight;
+		}, 0);
+
+		var acc = 0;
+
+		var lams = exps.mapi((index, exp) -> {
+			var phrase = 'if (_rand < ${exp.weight + acc}) {\n${indent("return " + exp.compile(this) + ";")}\n}';
+			acc += exp.weight;
+			return phrase;
+		}).join("\n");
+
+		return 'var _rand = Std.random(${weightSum});\n${lams}';
 	}
 
 	public function expression(exprs:Array<String>):String {
