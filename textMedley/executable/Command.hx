@@ -9,7 +9,6 @@ class Command {
 	public static function main() {
 		var args = Sys.args();
 		Sys.setCwd(args.pop());
-
-		Shared.run(args);
+		new mcli.Dispatch(args).dispatch(new Shared());
 	}
 }

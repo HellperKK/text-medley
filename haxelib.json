@@ -11,7 +11,7 @@
         "HellperKK"
     ],
     "dependencies": {
-        "hxargs": "3.0.2"
+        "mcli": "0.1.7"
     },
     "main": "textMedley.executable.Command"
 }

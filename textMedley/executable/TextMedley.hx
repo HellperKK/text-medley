@@ -6,7 +6,6 @@ import sys.io.File;
 
 class TextMedley {
 	public static function main() {
-		var args = Sys.args();
-		Shared.run(args);
+		new mcli.Dispatch(Sys.args()).dispatch(new Shared());
 	}
 }
