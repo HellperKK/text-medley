@@ -93,9 +93,10 @@ class Block extends BaseBlock {
 			value: null,
 			opt: null
 		});
+
 		return {
 			expr: macro $b{code},
-			args: $v{args},
+			args: args,
 			params: [],
 			ret: null // (macro:String)
 		};
