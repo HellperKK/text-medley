@@ -5,10 +5,6 @@
 
 #count($value):
     -output:
-        "$value, #count(#plus($value,1))"
-        "$value, #count(#plus($value,1))"
-        "$value, #count(#plus($value,1))"
-        "$value, #count(#plus($value,1))"
-        "$value, #count(#plus($value,1))"
+        <9> $value, #count(#plus($value,1))
         end
 #end
